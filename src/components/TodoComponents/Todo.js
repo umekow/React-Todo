@@ -1,8 +1,8 @@
 import React from 'react'
 import list from './data'
 import TodoList from './TodoList'
-import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
+import './Todo.css'
 class Todo extends React.Component{
     constructor(){
         super();
@@ -13,12 +13,16 @@ class Todo extends React.Component{
     }
 
     toggleChecked = id => {
+        console.log('checked')
+        
         this.setState({
             list: this.state.list.map(item => {
-                if (item.id == id) {
+                console.log(item.completed)
+                if (item.id === id) {
                     return {
                         ...item, 
                         completed: true, 
+
                     }
                 }else{
                     return item; 
@@ -36,13 +40,29 @@ class Todo extends React.Component{
         }
 
         this.setState({
-            list: [...this.list, newItem]
+            list: [...this.state.list, newItem]
+        })
+    }
+
+    clear = () => {
+        this.setState({
+            list: this.state.list.filter(item => !item.completed)
         })
     }
     render() {
         return(
             <>
-                <h1>This is the todo component</h1>
+               <div className="header">
+                   <h1>Umeko's Todo List</h1>
+                   <TodoForm addItem={this.addItem} />
+
+               </div>
+
+               <TodoList
+                    todolist={this.state.list}
+                    toggleItem={this.toggleChecked}
+                    clear={this.clear}
+                    />
             </>
         )
     }
